@@ -1,0 +1,25 @@
+service: ecoleta-api
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
+
+plugins:
+  - serverless-offline
+
+functions:
+  hello:
+    name: hello-${self:provider.stage}
+    handler: dist/handlers/hello.handler
+    events:
+      - http:
+          path: hello
+          method: GET
+          cors: true
+    tags:
+      nome: hello-${self:provider.stage}
+
+custom:
+  serverless-offline:
+    httpPort: 4000

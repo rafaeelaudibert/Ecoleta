@@ -1,0 +1,47 @@
+{
+  "name": "ecoleta-api",
+  "version": "0.0.1",
+  "description": "Serverless API developed during RocketSeat's NLW #1 for Ecoleta application",
+  "main": "index.js",
+  "scripts": {
+    "start": "sls offline",
+    "build": "tsc",
+    "deploy": "npm run build && sls deploy",
+    "deploy:prod": "npm run build && sls deploy -s prod",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --ext .ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafaeelaudibert/ecoleta.git"
+  },
+  "keywords": [
+    "typescript",
+    "serverless",
+    "api",
+    "rest",
+    "nlw",
+    "node"
+  ],
+  "author": "Rafael Audibert <rafaeelaudibert@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rafaeelaudibert/ecoleta/issues"
+  },
+  "homepage": "https://github.com/rafaeelaudibert/ecoleta#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.1.0",
+    "@typescript-eslint/parser": "^3.1.0",
+    "eslint": "^7.1.0",
+    "eslint-plugin-node": "^11.1.0",
+    "serverless": "^1.71.3",
+    "serverless-offline": "^6.3.0",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.3"
+  },
+  "dependencies": {
+    "@types/aws-lambda": "^8.10.51",
+    "@types/node": "^14.0.9",
+    "aws-lambda": "^1.0.6"
+  }
+}

@@ -1,0 +1,83 @@
+{
+    "extends": [
+        "eslint:all",
+        "plugin:node/recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "sourceType": "module"
+    },
+    "rules": {
+        "func-names": ["error", "never"],
+        "func-style": 0,
+        "linebreak-style": 0,
+        "indent": [
+            "error",
+            2,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "max-statements": 0,
+        "no-console": ["error", {
+            "allow": ["error"]
+        }],
+        "no-warning-comments": 0,
+        "one-var": 0,
+        "padded-blocks": 0,
+        "prefer-named-capture-group": 0,
+        "prefer-object-spread": 0,
+        "quotes": ["error", "single", {
+            "allowTemplateLiterals": true
+        }],
+        "quote-props": 0,
+        "semi": ["error", "never"],
+        "space-infix-ops": 0,
+        "space-in-parens": [2, "always", {
+            "exceptions": ["empty"]
+        }],
+        "class-methods-use-this": 0,
+        "multiline-ternary": 0,
+        "no-ternary": 0,
+        "max-params": ["error", 4],
+        "array-element-newline": ["error", "consistent"],
+        "no-magic-numbers": ["error", {
+            "ignore": [0, 1, -1]
+        }],
+        "max-len": ["error", {
+            "code": 100,
+            "ignoreUrls": true,
+            "ignoreTrailingComments": true,
+            "ignoreTemplateLiterals": true,
+            "ignoreStrings": true
+        }],
+        "max-lines-per-function": 0,
+        "object-shorthand": ["error", "always", {
+            "avoidQuotes": true
+        }],
+        "node/no-missing-require": ["error", {
+            "allowModules": [
+                "bwip-js",
+                "ejs",
+                "html-pdf",
+                "@ronomon/base64",
+                "unorm"
+            ]
+        }],
+        "node/no-unsupported-features/es-syntax": 0,
+        "node/no-missing-import": 0,
+        "@typescript-eslint/no-unused-vars": ["error", {
+            "argsIgnorePattern": "^_"
+        }],
+        "function-call-argument-newline": ["error", "consistent"]
+    },
+    "env": {
+        "node": true,
+        "es6": true
+    },
+    "plugins": [
+        "@typescript-eslint"
+    ]
+}
