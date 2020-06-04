@@ -7,10 +7,22 @@ custom:
   prune: # automatically prune old lambda versions
     automatic: true
     number: 3
+  dynamodb:
+    stages:
+      - local
+    start:
+      migrate: true
+      seed: true
+    seed:
+      data:
+        sources:
+          - table: ${self:provider.environment.ITEMS_TABLE}
+            sources: ['./dynamodb/seed/items.json']
 
 plugins:
-  - serverless-offline
   - serverless-webpack
+  - serverless-dynamodb-local
+  - serverless-offline
   - serverless-prune-plugin
 
 provider:
@@ -25,13 +37,85 @@ provider:
     DEBUG: '*'
     NODE_ENV: ${self:provider.stage}
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    ITEMS_TABLE: "${self:service}-items-${self:provider.stage}"
+    POINTS_TABLE: "${self:service}-points-${self:provider.stage}"
+    ASSETS_BUCKET: "https://placeholder.com.br"
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+      Resource: "*"
 
 
 functions:
-  hello:
-    handler: src/handlers/users/get.handler
+  items-index:
+    name: items-index-${self:provider.stage}
+    handler: src/handlers/items/index.handler
     events:
       - http:
           method: get
-          path: /users
+          path: /items
           cors: true
+  points-create:
+    name: points-create-${self:provider.stage}
+    handler: src/handlers/points/create.handler
+    events:
+      - http:
+          method: post
+          path: /points
+          cors: true
+  points-show:
+    name: points-show-${self:provider.stage}
+    handler: src/handlers/points/show.handler
+    events:
+      - http:
+          method: get
+          path: /points/{id}
+          cors: true
+          request:
+              parameters:
+                  paths:
+                    id: true
+
+
+resources:
+  Resources:
+    PointsDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          -
+            AttributeName: "id"
+            KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        StreamSpecification:
+          StreamViewType: "NEW_AND_OLD_IMAGES"
+        TableName: ${self:provider.environment.POINTS_TABLE}
+    ItemsDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          -
+            AttributeName: "id"
+            KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        StreamSpecification:
+          StreamViewType: "NEW_AND_OLD_IMAGES"
+        TableName: ${self:provider.environment.ITEMS_TABLE}
