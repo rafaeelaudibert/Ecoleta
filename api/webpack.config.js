@@ -16,13 +16,13 @@ module.exports = {
   entry: slsw.lib.entries,
   devtool: slsw.lib.webpack.isLocal ? 'cheap-module-eval-source-map' : 'source-map',
   resolve: {
-    extensions: ['.mjs', '.json', '.ts'],
+    extensions: [ '.mjs', '.json', '.ts' ],
     symlinks: false,
     cacheWithContext: false,
     alias: {
       '@handlers': path.resolve( __dirname, './src/handlers' ),
       '@lib': path.resolve( __dirname, './src/lib' ),
-      '@services': path.resolve( __dirname, './src/services' ),
+      '@models': path.resolve( __dirname, './src/models' ),
       '@utils': path.resolve( __dirname, './src/utils' ),
       '@tests': path.resolve( __dirname, './tests' )
     }
@@ -33,7 +33,7 @@ module.exports = {
     filename: '[name].js'
   },
   target: 'node',
-  externals: [nodeExternals()],
+  externals: [ nodeExternals() ],
   module: {
     rules: [
       // All files with a `.ts` or `.tsx` extension will be handled by `ts-loader`

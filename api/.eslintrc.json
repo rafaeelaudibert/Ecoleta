@@ -60,6 +60,8 @@
             "ignoreStrings": true
         }],
         "max-lines-per-function": 0,
+        "object-curly-spacing": ["error", "always"],
+        "array-bracket-spacing": ["error", "always"],
         "object-shorthand": ["error", "always", {
             "avoidQuotes": true
         }],
@@ -83,7 +85,7 @@
                 "map": [
                     ["@handlers", "./src/handlers"],
                     ["@utils", "./src/utils"],
-                    ["@services", "./src/services"],
+                    ["@models", "./src/models"],
                     ["@lib", "./src/lib"],
                     ["@tests", "./tests"]
                 ],

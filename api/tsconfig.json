@@ -15,7 +15,7 @@
     "paths": {
       "@handlers/*": ["src/handlers/*"],
       "@utils/*": ["src/utils/*"],
-      "@services/*": ["src/services/*"],
+      "@models/*": ["src/models/*"],
       "@lib/*": ["src/lib/*"],
       "@tests/*": ["tests/*"]
     }
