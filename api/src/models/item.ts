@@ -47,7 +47,7 @@ class Item extends Model {
     toJSON (): ItemParams & {imageUrl: string} {
       return {
         id: this.id,
-        imageUrl: `${process.env.ASSETS_BUCKET}/${this.image}`,
+        imageUrl: this.image,
         title: this.title
       }
     }
