@@ -1,3 +1,4 @@
+import AWS from 'aws-sdk'
 import DB from '@lib/db'
 
 export type SearchKey = Record<string, unknown>
@@ -26,17 +27,34 @@ export default abstract class Model {
     }
 
 
-    // TODO: Add filters and fetch every data
+    // TODO: Add filters
     static async scan ( table: string ): Promise<Array<Record<string, unknown>>> {
       const connection = new DB()
 
-      const params = {
+      const params: AWS.DynamoDB.DocumentClient.ScanInput = {
         TableName: table
       }
 
-      const { Items } = await connection.scan( params )
+      const allItems: Record<string, unknown>[] = []
+      let shouldContinue = false
+      let lastKey = null
+      do {
+        shouldContinue = false
+        if ( lastKey ) {
+          params.ExclusiveStartKey = lastKey
+        }
 
-      return Items as Array<Record<string, unknown>>
+        const { Items, LastEvaluatedKey } = await connection.scan( params ) // eslint-disable-line no-await-in-loop
+        allItems.push( ...Items )
+
+        if ( LastEvaluatedKey ) {
+          lastKey = LastEvaluatedKey
+          shouldContinue = true
+        }
+      } while ( shouldContinue )
+
+
+      return allItems
     }
 
     save ( Item: Record<string, unknown> ): Promise<unknown> {
