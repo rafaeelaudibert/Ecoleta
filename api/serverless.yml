@@ -59,6 +59,14 @@ functions:
           method: get
           path: /items
           cors: true
+  points-index:
+    name: points-index-${self:provider.stage}
+    handler: src/handlers/points/index.handler
+    events:
+      - http:
+          method: get
+          path: /points
+          cors: true
   points-create:
     name: points-create-${self:provider.stage}
     handler: src/handlers/points/create.handler
