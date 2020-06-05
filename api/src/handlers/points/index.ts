@@ -5,7 +5,7 @@ import { Response } from '@handlers/types'
 
 // eslint-disable-next-line require-await
 export const handler = async ( event: APIGatewayEvent ): Promise<Response> => {
-  const { city, uf, items } = event.queryStringParameters
+  const { city, uf, items } = event.queryStringParameters || {}
 
   const parsedItems = items && items.split( ',' )
 
