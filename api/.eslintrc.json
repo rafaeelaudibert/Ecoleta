@@ -60,6 +60,7 @@
             "ignoreStrings": true
         }],
         "max-lines-per-function": 0,
+        "dot-location": ["error", "property"],
         "object-curly-spacing": ["error", "always"],
         "array-bracket-spacing": ["error", "always"],
         "object-shorthand": ["error", "always", {
