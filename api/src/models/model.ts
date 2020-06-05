@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 import AWS from 'aws-sdk'
 import DB from '@lib/db'
 
@@ -18,7 +19,7 @@ export default abstract class Model {
       const connection = new DB()
       const params = {
         TableName: table,
-        Key // eslint-disable-line sort-keys
+        Key
       }
 
       const { Item } = await connection.get( params )
@@ -26,13 +27,30 @@ export default abstract class Model {
       return Item as Record<string, unknown>
     }
 
-
-    // TODO: Add filters
-    static async scan ( table: string ): Promise<Array<Record<string, unknown>>> {
+    static async scan (
+      table: string,
+      filters: Record<string, string> = {}
+    ): Promise<Record<string, unknown>[]> {
       const connection = new DB()
+
+      const filterExpression = Object.entries( filters ).map( ( [ key ] ) => `${key} = :${key}` )
+        .join( ' AND ' )
+
+      const expressionAttributeValues = Object.entries( filters ).reduce(
+        ( obj, [ key, value ] ) => ( {
+          ...obj,
+          [`:${key}`]: value
+        } ),
+        {}
+      )
 
       const params: AWS.DynamoDB.DocumentClient.ScanInput = {
         TableName: table
+      }
+
+      if ( filterExpression !== '' ) {
+        params.FilterExpression = filterExpression
+        params.ExpressionAttributeValues = expressionAttributeValues
       }
 
       const allItems: Record<string, unknown>[] = []
@@ -61,7 +79,7 @@ export default abstract class Model {
       const connection = new DB()
       const params = {
         TableName: this.table,
-        Item // eslint-disable-line sort-keys
+        Item
       }
 
       return connection.put( params )

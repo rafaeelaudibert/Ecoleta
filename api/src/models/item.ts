@@ -38,7 +38,7 @@ class Item extends Model {
       return new Item( item as unknown as ItemParams )
     }
 
-    static async all (): Promise<Array<Item>> {
+    static async all (): Promise<Item[]> {
       const items = await super.scan( Item.TABLE_NAME )
 
       return items.map( ( data ) => new Item( data as unknown as ItemParams ) )

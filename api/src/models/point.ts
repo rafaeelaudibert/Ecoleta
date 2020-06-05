@@ -11,7 +11,7 @@ export interface PointParams extends Record<string, unknown>{
     longitude: string
     city: string;
     uf: string;
-    items: Array<string>;
+    items: string[];
 }
 
 export interface PointFromDynamoParams extends SearchKey {
@@ -21,25 +21,25 @@ export interface PointFromDynamoParams extends SearchKey {
 class Point extends Model {
     private static TABLE_NAME = process.env.POINTS_TABLE
 
-    id: string;
+    id: string
 
-    name: string;
+    name: string
 
-    image: string;
+    image: string
 
-    email: string;
+    email: string
 
-    whatsapp: string;
+    whatsapp: string
 
-    latitude: string;
+    latitude: string
 
     longitude: string
 
-    city: string;
+    city: string
 
-    uf: string;
+    uf: string
 
-    items: Array<string>
+    items: string[]
 
     constructor ( {
       id,
@@ -63,7 +63,7 @@ class Point extends Model {
       this.longitude = longitude
       this.city = city
       this.uf = uf
-      this.items=items as Array<string>
+      this.items = items as string[]
     }
 
     static async fromDynamo ( { id }: PointFromDynamoParams ): Promise<Point> {
@@ -77,10 +77,10 @@ class Point extends Model {
       return new Point( point as unknown as PointParams )
     }
 
-    static async all (): Promise<Array<Point>> {
-      const users = await super.scan( Point.TABLE_NAME )
+    static async filter ( filters: Record<string, string> ): Promise<Point[]> {
+      const points = await super.scan( Point.TABLE_NAME, filters )
 
-      return users.map( ( data ) => new Point( data as unknown as PointParams ) )
+      return points.map( ( data ) => new Point( data as unknown as PointParams ) )
     }
 
     save (): Promise<unknown> {
