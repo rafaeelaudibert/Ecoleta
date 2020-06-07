@@ -2,28 +2,15 @@ import './styles.css'
 import { Link, useHistory } from 'react-router-dom'
 import { Map, Marker, TileLayer } from 'react-leaflet'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import api, { Item } from '../../services/api'
+import ibge, { IbgeCityResponse, IbgeUfResponse } from '../../services/ibge'
 import { FiArrowLeft } from 'react-icons/fi'
+import FormState from './formState'
 import { LeafletMouseEvent } from 'leaflet'
+import Overlay from './Overlay'
 
-import api from '../../services/api'
-import ibge from '../../services/ibge'
 
 import logo from '../../assets/logo.svg'
-
-interface Item {
-    id: string;
-    title: string;
-    imageUrl: string;
-    selected: boolean;
-}
-
-interface IbgeUfResponse {
-    sigla: string;
-}
-
-interface IbgeCityResponse {
-    nome: string;
-}
 
 const CreatePoint: React.FC = () => {
   const [ allItems, setAllItems ] = useState<Item[]>( [] )
@@ -44,6 +31,8 @@ const CreatePoint: React.FC = () => {
     whatsapp: ''
   } )
 
+  const [ formState, setFormState ] = useState<FormState>( FormState.InProgress )
+
   const history = useHistory()
 
   useEffect( () => {
@@ -62,9 +51,7 @@ const CreatePoint: React.FC = () => {
 
   useEffect( () => {
     ibge.get<IbgeUfResponse[]>( '/' ).then( ( { data } ) => {
-      const ufInitials = data.map( ( uf ) => uf.sigla )
-
-      setStates( ufInitials )
+      setStates( data.map( ( uf ) => uf.sigla ) )
     } )
   }, [] )
 
@@ -118,8 +105,32 @@ const CreatePoint: React.FC = () => {
     }
   }
 
+  const isSendButtonEnabled = () => {
+    const { name, email, whatsapp } = formData
+    const uf = selectedState
+    const city = selectedCity
+    const [ latitude, longitude ] = selectedPosition
+    const items = selectedItems
+
+    if ( name === '' ||
+      email === '' ||
+      whatsapp === '' ||
+      uf === '0' ||
+      city === '0' ||
+      latitude === 0 ||
+      longitude === 0 ||
+      items.length === 0
+    ) {
+      return false
+    }
+
+    return true
+  }
+
   const handleSubmit = async ( event: FormEvent ) => {
     event.preventDefault()
+
+    setFormState( FormState.Loading )
 
     const { name, email, whatsapp } = formData
     const uf = selectedState
@@ -138,137 +149,147 @@ const CreatePoint: React.FC = () => {
       whatsapp
     }
 
-    await api.post( '/points', data )
+    try {
+      await api.post( '/points', data )
 
-    // TODO: Add completed form modal or screen with animated check
-    history.push( '/' )
+      setFormState( FormState.Completed )
+    } catch ( error ) {
+      console.error( 'An error ocurred', error )
+      setFormState( FormState.Error )
+    }
   }
 
+
+  const shouldShowOverlay = [ FormState.Completed, FormState.Error ].includes( formState )
+
   return (
-    <div id="page-create-point">
-      <header>
-        <img src={logo} alt="Ecoleta"/>
-        <Link to="/">
-          <FiArrowLeft/>
+    <>
+      <div id="page-create-point">
+        <header>
+          <img src={logo} alt="Ecoleta"/>
+          <Link to="/">
+            <FiArrowLeft/>
                     Voltar para a home
-        </Link>
-      </header>
+          </Link>
+        </header>
 
-      <form onSubmit={handleSubmit}>
-        <h1>Cadastro do <br/>Ponto de coleta</h1>
+        <form onSubmit={handleSubmit}>
+          <h1>Cadastro do <br/>Ponto de coleta</h1>
 
-        <fieldset>
-          <legend>
-            <h2>Dados</h2>
-          </legend>
-
-          <div className="field">
-            <label htmlFor="name">Nome da entidade</label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              onChange={handleInputChange}
-              value={formData.name}
-            />
-          </div>
-
-          <div className="field-group">
-            <div className="field">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                onChange={handleInputChange}
-                value={formData.email}
-              />
-            </div>
+          <fieldset>
+            <legend>
+              <h2>Dados</h2>
+            </legend>
 
             <div className="field">
-              <label htmlFor="whatsapp">Whatsapp</label>
+              <label htmlFor="name">Nome da entidade</label>
               <input
                 type="text"
-                name="whatsapp"
-                id="whatsapp"
+                name="name"
+                id="name"
                 onChange={handleInputChange}
-                value={formData.whatsapp}
+                value={formData.name}
               />
             </div>
 
-          </div>
-        </fieldset>
+            <div className="field-group">
+              <div className="field">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  onChange={handleInputChange}
+                  value={formData.email}
+                />
+              </div>
 
-        <fieldset>
-          <legend>
-            <h2>Endereço</h2>
-            <span>Selecione o endereço no mapa</span>
-          </legend>
-          <Map center={initialPosition} zoom={15} onClick={handleMapClick}>
-            <TileLayer
-              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-
-            <Marker position={selectedPosition}/>
-          </Map>
-          <div className="field-group">
-            <div className="field">
-              <label htmlFor="uf">Estado (UF)</label>
-              <select
-                name="uf"
-                id="uf"
-                value={selectedState}
-                onChange={handleSelectState}
-              >
-                <option value="0">Selecione uma UF</option>
-                {states.map( ( state ) => <option value={state} key={state}>{state}</option> )}
-              </select>
+              <div className="field">
+                <label htmlFor="whatsapp">Whatsapp</label>
+                <input
+                  type="text"
+                  name="whatsapp"
+                  id="whatsapp"
+                  onChange={handleInputChange}
+                  value={formData.whatsapp}
+                />
+              </div>
             </div>
+          </fieldset>
 
-            <div className="field">
-              <label htmlFor="city">Cidade)</label>
-              <select
-                name="city"
-                id="city"
-                value={selectedCity}
-                onChange={handleSelectCity}
-              >
-                <option value="0">Selecione uma cidade</option>
-                {cities.map( ( city ) => <option value={city} key={city}>{city}</option> )}
-              </select>
+          <fieldset>
+            <legend>
+              <h2>Endereço</h2>
+              <span>Selecione o endereço no mapa</span>
+            </legend>
+            <Map center={initialPosition} zoom={15} onClick={handleMapClick}>
+              <TileLayer
+                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+
+              <Marker position={selectedPosition}/>
+            </Map>
+            <div className="field-group">
+              <div className="field">
+                <label htmlFor="uf">Estado (UF)</label>
+                <select
+                  name="uf"
+                  id="uf"
+                  value={selectedState}
+                  onChange={handleSelectState}
+                >
+                  <option value="0">Selecione uma UF</option>
+                  {states.map( ( state ) => <option value={state} key={state}>{state}</option> )}
+                </select>
+              </div>
+
+              <div className="field">
+                <label htmlFor="city">Cidade)</label>
+                <select
+                  name="city"
+                  id="city"
+                  value={selectedCity}
+                  onChange={handleSelectCity}
+                >
+                  <option value="0">Selecione uma cidade</option>
+                  {cities.map( ( city ) => <option value={city} key={city}>{city}</option> )}
+                </select>
+              </div>
             </div>
-          </div>
-        </fieldset>
+          </fieldset>
 
-        <fieldset>
-          <legend>
-            <h2>Itens de Coleta</h2>
-            <span>Selecione um ou mais itens abaixo</span>
-          </legend>
+          <fieldset>
+            <legend>
+              <h2>Itens de Coleta</h2>
+              <span>Selecione um ou mais itens abaixo</span>
+            </legend>
 
+            <ul className="items-grid">
+              {
+                allItems.map( ( item ) => <li
+                  key={item.id}
+                  className={`${selectedItems.includes( item.id ) ? 'selected' : ''}`}
+                  onClick={() => handleItemClick( item.id )}
+                >
+                  <img src={`/assets/${item.imageUrl}`} alt={item.title}/>
+                  <span>{item.title}</span>
+                </li> )
+              }
+            </ul>
+          </fieldset>
 
-          <ul className="items-grid">
-            {
-              allItems.map( ( item ) => <li
-                key={item.id}
-                className={`${selectedItems.includes( item.id ) ? 'selected' : ''}`}
-                onClick={() => handleItemClick( item.id )}
-              >
-                <img src={`/assets/${item.imageUrl}`} alt={item.title}/>
-                <span>{item.title}</span>
-              </li> )
-            }
-          </ul>
-        </fieldset>
-
-        <button type="submit">
-        Cadastrar ponto de coleta
-        </button>
-      </form>
-    </div>
+          <button type="submit" disabled={!isSendButtonEnabled() || formState === FormState.Loading}>
+            Cadastrar ponto de coleta
+          </button>
+        </form>
+      </div>
+      {shouldShowOverlay && <Overlay
+        formState={formState}
+        onClick={() => history.push( '/' )
+        }/>}
+    </>
   )
 }
-
 
 export default CreatePoint
