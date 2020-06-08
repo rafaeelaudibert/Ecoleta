@@ -10,6 +10,17 @@ WIP
 
 WIP
 
+## Todo ♻️
+
+* Add splash and logo image for mobile
+* Use [react-native-picker-select](https://github.com/lawnstarter/react-native-picker-select) for UF and City selection on Mobile
+* Upload assets images to S3, to be available at Desktop and Mobile
+* Add ability to upload photo for point (using Dropzone and S3 on backend)
+* Use .env files
+* Data validation on React frontend
+* Deploy on production (Vercel + Lambda + Dynamo + S3)
+* Change to another business rule, so that it is not exactly the same as presented during NLW #1
+
 ## Author
 
 * [RafaAudibert](https://github.com/rafaeelaudibert)
