@@ -1,3 +1,7 @@
 **/.serverless/
 **/dist/
 **/node_modules/
+
+# Mobile related
+mobile/.expo/
+mobile/.expo-shared/
