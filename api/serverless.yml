@@ -32,7 +32,7 @@ provider:
   stage: ${opt:stage, 'local'}
   region: ${opt:region, 'us-east-1'}
   apiGateway:
-    minimumCompressionSize: 1024 *# Enable gzip compression for responses > 1 KB
+    minimumCompressionSize: 1024
   environment:
     DEBUG: '*'
     NODE_ENV: ${self:provider.stage}

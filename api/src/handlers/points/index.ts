@@ -15,7 +15,8 @@ export const handler = async ( event: APIGatewayEvent ): Promise<Response> => {
       uf
     } ) ) )
 
-    const filteredPoints = parsedItems
+    // Only if parsed some items, and it is not an empty list
+    const filteredPoints = parsedItems && parsedItems[0] !== ''
       ? points.filter( ( point ) => parsedItems.find( ( item ) => point.items.includes( item ) ) )
       : points
 
