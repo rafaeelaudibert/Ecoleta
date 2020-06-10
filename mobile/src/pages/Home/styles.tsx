@@ -1,5 +1,38 @@
 import { StyleSheet } from 'react-native'
 
+export const inputStyles = StyleSheet.create( {
+  iconContainer: {
+    right: 12,
+    top: 16
+  },
+
+  inputAndroid: {
+    borderColor: '#ccc',
+    borderRadius: 6,
+    borderWidth: 1,
+    color: 'black',
+    fontSize: 16,
+    marginVertical: 5,
+    paddingHorizontal: 10,
+    paddingRight: 30,
+    paddingVertical: 12
+  },
+
+  inputIOS: {
+    borderColor: '#ccc',
+    borderRadius: 6,
+    borderWidth: 1,
+    color: 'black',
+    fontSize: 16,
+    marginVertical: 5,
+    paddingHorizontal: 10,
+    paddingRight: 30,
+    paddingVertical: 12
+  }
+
+
+} )
+
 const styles = StyleSheet.create( {
   button: {
     alignItems: 'center',
@@ -43,15 +76,6 @@ const styles = StyleSheet.create( {
   },
 
   footer: {},
-
-  input: {
-    backgroundColor: '#FFF',
-    borderRadius: 10,
-    fontSize: 16,
-    height: 60,
-    marginBottom: 8,
-    paddingHorizontal: 24
-  },
 
   main: {
     flex: 1,

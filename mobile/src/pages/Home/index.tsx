@@ -1,27 +1,66 @@
-import { Image, ImageBackground, KeyboardAvoidingView, Platform, Text, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
+import { Image, ImageBackground, Text, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import ibge, { IbgeCityResponse, IbgeUfResponse } from '../../services/ibge'
 import { Feather as Icon } from '@expo/vector-icons'
+import Picker from 'react-native-picker-select'
 import { RectButton } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 
-import styles from './styles' // eslint-disable-line sort-imports
+import styles, { inputStyles } from './styles' // eslint-disable-line sort-imports
 
 
 const Home: React.FC = () => {
   const navigation = useNavigation()
 
-  const [ uf, setUf ] = useState( '' )
-  const [ city, setCity ] = useState( '' )
+  const [ states, setStates ] = useState<string[]>( [] )
+  const [ cities, setCities ] = useState<string[]>( [] )
+
+  const [ selectedState, setSelectedState ] = useState( '0' )
+  const [ selectedCity, setSelectedCity ] = useState( '0' )
+
+  useEffect( () => {
+    ibge.get<IbgeUfResponse[]>( '/' ).then( ( { data } ) => {
+      setStates( data.map( ( uf ) => uf.sigla ).sort() )
+    } )
+  }, [] )
+
+  useEffect( () => {
+    if ( selectedState === '0' ) {
+      return
+    }
+
+    // Reset city select
+    setCities( [] )
+    setSelectedCity( '0' )
+
+    ibge.get<IbgeCityResponse[]>( `/${selectedState}/municipios` ).then( ( { data } ) => {
+      const citiesNames = data.map( ( city ) => city.nome ).sort()
+
+      setCities( citiesNames )
+    } )
+  }, [ selectedState ] )
 
   const handleNavigateToPoints = () => {
     navigation.navigate( 'Points', {
-      city,
-      uf
+      city: selectedCity,
+      uf: selectedState
     } )
   }
 
+  const handleSelectState = ( itemValue: string | number, _itemIndex: number ) => {
+    const state = String( itemValue )
+
+    setSelectedState( state )
+  }
+
+  const handleSelectCity = ( itemValue: string | number, _itemIndex: number ) => {
+    const city = String( itemValue )
+
+    setSelectedCity( city )
+  }
+
   // eslint-disable-next-line no-undefined
-  return <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+  return <>
     <ImageBackground
       style={styles.container}
       source={require( '../../assets/home-background.png' )}
@@ -41,22 +80,40 @@ const Home: React.FC = () => {
       </View>
 
       <View style={styles.footer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Digite a UF"
-          value={uf}
-          maxLength={2}
-          autoCapitalize="characters"
-          autoCorrect={false}
-          onChangeText={setUf}
+        <Picker
+          style={inputStyles}
+          value={selectedState}
+          onValueChange={handleSelectState}
+          placeholder={{
+            label: 'Selecione um estado',
+            value: '0'
+          }}
+          Icon={() => <Icon name="chevron-down" color="#999" size={24}/>}
+          items={
+            states.map( ( state ) => ( {
+              label: state,
+              value: state
+            } ) )
+          }
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Digite a Cidade"
-          value={city}
-          autoCorrect={false}
-          onChangeText={setCity}
+        <Picker
+          style={inputStyles}
+          value={selectedCity}
+          onValueChange={handleSelectCity}
+          placeholder={{
+            label: 'Selecione uma cidade',
+            value: '0'
+          }}
+          disabled={selectedState === '0'}
+          Icon={() => <Icon name="chevron-down" color="#999" size={24}/>}
+          items={
+            cities.map( ( city ) => ( {
+              label: city,
+              value: city
+            } ) )
+          }
         />
+
 
         <RectButton
           style={styles.button}
@@ -75,7 +132,7 @@ const Home: React.FC = () => {
       </View>
 
     </ImageBackground>
-  </KeyboardAvoidingView>
+  </>
 }
 
 
