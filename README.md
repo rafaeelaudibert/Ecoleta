@@ -12,7 +12,6 @@ WIP
 
 ## Todo ♻️
 
-* Add splash and logo image for mobile
 * Upload assets images to S3, to be available at Desktop and Mobile
 * Add ability to upload photo for point (using Dropzone and S3 on backend)
 * Use .env files
