@@ -1,4 +1,5 @@
 import axios from 'axios'
+import config from '../config'
 
 export interface Item {
   id: string;
@@ -9,7 +10,7 @@ export interface Item {
 
 
 const api = axios.create( {
-  baseURL: 'http://localhost:3000'
+  baseURL: config.apiEndpoint
 } )
 
 export default api

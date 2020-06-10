@@ -7,7 +7,8 @@
     "start": "sls offline start --seed=data",
     "test": "NODE_ENV=test ./node_modules/.bin/jest --ci --verbose",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "buildtest": "tsc --noEmit"
+    "buildtest": "tsc --noEmit",
+    "sync_assets": "aws s3 sync ./assets s3://ecoleta-static/assets"
   },
   "dependencies": {
     "aws-lambda": "^1.0.6",

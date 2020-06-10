@@ -12,11 +12,10 @@ WIP
 
 ## Todo ♻️
 
-* Upload assets images to S3, to be available at Desktop and Mobile
 * Add ability to upload photo for point (using Dropzone and S3 on backend)
-* Use .env files
 * Data validation on React frontend
-* Deploy on production (Vercel + Lambda + Dynamo + S3)
+* Deploy on production with Github Actions (Vercel + Lambda + Dynamo + S3)
+* Add screenshots to README.md
 * Change to another business rule, so that it is not exactly the same as presented during NLW #1
 
 ## Author

@@ -1,7 +1,8 @@
 import axios from 'axios'
+import config from '../config'
 
 const api = axios.create( {
-  baseURL: 'https://4v2s8w6glb.execute-api.us-east-1.amazonaws.com/local/'
+  baseURL: config.apiEndpoint
 } )
 
 export default api

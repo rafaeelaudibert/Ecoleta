@@ -9,7 +9,7 @@ import FormState from './formState'
 import { LeafletMouseEvent } from 'leaflet'
 import Overlay from './Overlay'
 
-
+import config from '../../config'
 import logo from '../../assets/logo.svg'
 
 const CreatePoint: React.FC = () => {
@@ -272,7 +272,7 @@ const CreatePoint: React.FC = () => {
                   className={`${selectedItems.includes( item.id ) ? 'selected' : ''}`}
                   onClick={() => handleItemClick( item.id )}
                 >
-                  <img src={`/assets/${item.imageUrl}`} alt={item.title}/>
+                  <img src={`${config.assetsPath}${item.imageUrl}`} alt={item.title}/>
                   <span>{item.title}</span>
                 </li> )
               }

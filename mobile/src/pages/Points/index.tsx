@@ -6,13 +6,14 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { Feather as Icon } from '@expo/vector-icons'
 import { SvgUri } from 'react-native-svg'
 import api from '../../services/api'
+import config from '../../config'
 
 import styles from './styles' // eslint-disable-line sort-imports
 
 interface Item {
     id: string
     title: string
-    imageURL: string
+    imageUrl: string
 }
 
 interface Point {
@@ -153,7 +154,7 @@ const Points: React.FC = () => {
             key={item.title}
             activeOpacity={0.6}
           >
-            <SvgUri width={42} height={42} uri={item.imageURL}/>
+            <SvgUri width={42} height={42} uri={`${config.assetsPath}${item.imageUrl}`}/>
             <Text style={styles.itemTitle}>
               {item.title}
             </Text>

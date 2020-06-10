@@ -1,2 +1,4 @@
 .expo/
 .expo-shared/
+.env.production
+.env
