@@ -12,7 +12,6 @@ WIP
 
 ## Todo ♻️
 
-* Add ability to upload photo for point (using Dropzone and S3 on backend)
 * Data validation on React frontend
 * Deploy on production with Github Actions (Vercel + Lambda + Dynamo + S3)
 * Add screenshots to README.md
@@ -20,4 +19,4 @@ WIP
 
 ## Author
 
-* [RafaAudibert](https://github.com/rafaeelaudibert)
+* [RafaAudibert](https://rafaaudibert.dev)
