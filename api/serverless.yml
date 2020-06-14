@@ -7,6 +7,11 @@ custom:
   prune: # automatically prune old lambda versions
     automatic: true
     number: 3
+  s3:
+    host: localhost
+    directory: ./s3
+    cors: ./s3/cors-config.xml
+    allowMismatchedSignatures: true
   dynamodb:
     stages:
       - local
@@ -21,6 +26,7 @@ custom:
 
 plugins:
   - serverless-webpack
+  - serverless-s3-local
   - serverless-dynamodb-local
   - serverless-offline
   - serverless-prune-plugin
@@ -40,6 +46,7 @@ provider:
     ITEMS_TABLE: "${self:service}-items-${self:provider.stage}"
     POINTS_TABLE: "${self:service}-points-${self:provider.stage}"
     ASSETS_BUCKET: "https://placeholder.com.br"
+    IMAGES_BUCKET: "${self:service}-images-${self:provider.stage}"
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -48,11 +55,15 @@ provider:
         - dynamodb:GetItem
         - dynamodb:PutItem
       Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource: "*"
 
 
 functions:
   items-index:
-    name: items-index-${self:provider.stage}
+    name: ${self:service}-items-index-${self:provider.stage}
     handler: src/handlers/items/index.handler
     events:
       - http:
@@ -60,7 +71,7 @@ functions:
           path: /items
           cors: true
   points-index:
-    name: points-index-${self:provider.stage}
+    name: ${self:service}-points-index-${self:provider.stage}
     handler: src/handlers/points/index.handler
     events:
       - http:
@@ -68,15 +79,27 @@ functions:
           path: /points
           cors: true
   points-create:
-    name: points-create-${self:provider.stage}
+    name: ${self:service}-points-create-${self:provider.stage}
     handler: src/handlers/points/create.handler
     events:
       - http:
           method: post
           path: /points
           cors: true
+  points-delete:
+    name: ${self:service}-points-delete-${self:provider.stage}
+    handler: src/handlers/points/delete.handler
+    events:
+      - http:
+          method: delete
+          path: /points/{id}
+          cors: true
+          request:
+              parameters:
+                  paths:
+                    id: true
   points-show:
-    name: points-show-${self:provider.stage}
+    name: ${self:service}-points-show-${self:provider.stage}
     handler: src/handlers/points/show.handler
     events:
       - http:
@@ -91,6 +114,22 @@ functions:
 
 resources:
   Resources:
+    ImagesS3Bucket:
+      Type: 'AWS::S3::Bucket'
+      Properties:
+        BucketName: ${self:provider.environment.IMAGES_BUCKET}
+        AccessControl: PublicRead
+        CorsConfiguration:
+          CorsRules:
+          - AllowedMethods:
+            - GET
+            - PUT
+            - POST
+            - HEAD
+            AllowedOrigins:
+            - "*"
+            AllowedHeaders:
+            - "*"
     PointsDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Retain

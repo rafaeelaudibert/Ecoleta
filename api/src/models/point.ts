@@ -4,7 +4,6 @@ import { v1 as uuidV1 } from 'uuid'
 export interface PointParams extends Record<string, unknown>{
     id?: string;
     name: string;
-    image: string;
     email: string;
     whatsapp: string;
     latitude: string;
@@ -25,8 +24,6 @@ class Point extends Model {
 
     name: string
 
-    image: string
-
     email: string
 
     whatsapp: string
@@ -44,7 +41,6 @@ class Point extends Model {
     constructor ( {
       id,
       name,
-      image,
       email,
       whatsapp,
       latitude,
@@ -56,7 +52,6 @@ class Point extends Model {
       super( Point.TABLE_NAME )
       this.id = id || uuidV1()
       this.name = name
-      this.image = image
       this.email = email
       this.whatsapp = whatsapp
       this.latitude = latitude
@@ -83,6 +78,10 @@ class Point extends Model {
       return points.map( ( data ) => new Point( data as unknown as PointParams ) )
     }
 
+    delete (): Promise<unknown> {
+      return super.delete( this.id )
+    }
+
     save (): Promise<unknown> {
       return super.save( this.toJSON() )
     }
@@ -92,7 +91,6 @@ class Point extends Model {
         city: this.city,
         email: this.email,
         id: this.id,
-        image: this.image,
         items: this.items,
         latitude: this.latitude,
         longitude: this.longitude,

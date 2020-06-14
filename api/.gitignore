@@ -10,3 +10,7 @@ jspm_packages
 
 # Local dynamo directories
 .dynamodb
+
+# Local S3 directories
+s3/*
+!s3/cors-config.xml

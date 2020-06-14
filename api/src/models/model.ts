@@ -85,5 +85,17 @@ export default abstract class Model {
       return connection.put( params )
     }
 
+    delete ( id: string ): Promise<AWS.DynamoDB.DocumentClient.DeleteItemOutput> {
+      const connection = new DB()
+      const params = {
+        TableName: this.table,
+        Key: {
+          'id': id
+        }
+      }
+
+      return connection.delete( params )
+    }
+
     abstract toJSON(): Record<string, unknown>
 }

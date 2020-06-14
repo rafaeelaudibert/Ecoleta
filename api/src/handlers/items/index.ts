@@ -3,7 +3,6 @@ import { APIGatewayEvent } from 'aws-lambda'
 import Item from '@models/item'
 import { Response } from '@handlers/types'
 
-// eslint-disable-next-line require-await
 export const handler = async ( _event: APIGatewayEvent ): Promise<Response> => {
   try {
     const items = await Item.all()

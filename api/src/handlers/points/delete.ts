@@ -1,6 +1,5 @@
 import { failure, success } from '@utils/response'
 import { APIGatewayEvent } from 'aws-lambda'
-import Item from '@models/item'
 import Point from '@models/point'
 import { Response } from '@handlers/types'
 import StatusCode from '@utils/httpStatus'
@@ -9,15 +8,9 @@ export const handler = async ( event: APIGatewayEvent ): Promise<Response> => {
   const { id } = event.pathParameters
 
   try {
-    const point = await Point.fromDynamo( { id } )
-    const items = await Item.all()
+    await Point.fromDynamo( { id } ).then( ( point ) => point.delete() )
 
-    const pointItems = items.filter( ( item ) => point.items.includes( item.id ) )
-
-    return success( { point: {
-      ...point,
-      items: pointItems
-    } } )
+    return success( { }, StatusCode.ACCEPTED )
 
   } catch ( error ) {
     let statusCode = StatusCode.INTERNAL_SERVER_ERROR
