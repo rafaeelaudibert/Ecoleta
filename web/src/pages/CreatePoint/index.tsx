@@ -4,6 +4,7 @@ import { Map, Marker, TileLayer } from 'react-leaflet'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import api, { Item } from '../../services/api'
 import ibge, { IbgeCityResponse, IbgeUfResponse } from '../../services/ibge'
+import Dropzone from '../../components/Dropzone'
 import { FiArrowLeft } from 'react-icons/fi'
 import FormState from './formState'
 import { LeafletMouseEvent } from 'leaflet'
@@ -11,6 +12,7 @@ import Overlay from './Overlay'
 
 import config from '../../config'
 import logo from '../../assets/logo.svg'
+import rawRequest from '../../services/raw'
 
 const CreatePoint: React.FC = () => {
   const [ allItems, setAllItems ] = useState<Item[]>( [] )
@@ -24,6 +26,8 @@ const CreatePoint: React.FC = () => {
 
   const [ initialPosition, setInitialPosition ] = useState<[number, number]>( [ 0, 0 ] )
   const [ selectedPosition, setSelectedPosition ] = useState<[number, number]>( [ 0, 0 ] )
+
+  const [ selectedFile, setSelectedFile ] = useState<File>()
 
   const [ formData, setFormData ] = useState( {
     email: '',
@@ -51,7 +55,7 @@ const CreatePoint: React.FC = () => {
 
   useEffect( () => {
     ibge.get<IbgeUfResponse[]>( '/' ).then( ( { data } ) => {
-      setStates( data.map( ( uf ) => uf.sigla ) )
+      setStates( data.map( ( uf ) => uf.sigla ).sort() )
     } )
   }, [] )
 
@@ -65,22 +69,16 @@ const CreatePoint: React.FC = () => {
     setSelectedCity( '0' )
 
     ibge.get<IbgeCityResponse[]>( `/${selectedState}/municipios` ).then( ( { data } ) => {
-      const citiesNames = data.map( ( city ) => city.nome ).sort()
-
-      setCities( citiesNames )
+      setCities( data.map( ( city ) => city.nome ).sort() )
     } )
   }, [ selectedState ] )
 
   const handleSelectState = ( event: ChangeEvent<HTMLSelectElement> ) => {
-    const state = event.target.value
-
-    setSelectedState( state )
+    setSelectedState( event.target.value )
   }
 
   const handleSelectCity = ( event: ChangeEvent<HTMLSelectElement> ) => {
-    const city = event.target.value
-
-    setSelectedCity( city )
+    setSelectedCity( event.target.value )
   }
 
   const handleMapClick = ( event: LeafletMouseEvent ) => {
@@ -112,19 +110,11 @@ const CreatePoint: React.FC = () => {
     const [ latitude, longitude ] = selectedPosition
     const items = selectedItems
 
-    if ( name === '' ||
-      email === '' ||
-      whatsapp === '' ||
-      uf === '0' ||
-      city === '0' ||
-      latitude === 0 ||
-      longitude === 0 ||
-      items.length === 0
-    ) {
-      return false
-    }
-
-    return true
+    return (
+      [ name, email, whatsapp ].every( ( val ) => val === '' ) ||
+      [ uf, city ].every( ( val ) => val === '0' ) ||
+      [ latitude, longitude, items.length ].every( ( val ) => val === 0 )
+    )
   }
 
   const handleSubmit = async ( event: FormEvent ) => {
@@ -133,32 +123,43 @@ const CreatePoint: React.FC = () => {
     setFormState( FormState.Loading )
 
     const { name, email, whatsapp } = formData
-    const uf = selectedState
-    const city = selectedCity
     const [ latitude, longitude ] = selectedPosition
-    const items = selectedItems
 
     const data = {
-      city,
+      city: selectedCity,
       email,
-      items,
+      imageContentType: selectedFile?.type,
+      items: selectedItems,
       latitude: latitude.toString(),
       longitude: longitude.toString(),
       name,
-      uf,
+      uf: selectedState,
       whatsapp
     }
 
+    let pointId: string | null = null
     try {
-      await api.post( '/points', data )
+      const { data: { point, signedUrl } } = await api.post( '/points', data )
+      pointId = point.id as string
+
+      if ( selectedFile ) {
+        const headers = {
+          'Content-Type': selectedFile.type
+        }
+        await rawRequest.put( signedUrl, selectedFile, { headers } )
+      }
 
       setFormState( FormState.Completed )
     } catch ( error ) {
+      // Delete the point if created, and error while uploading file
+      if ( pointId ) {
+        await api.delete( `/points/${pointId}` )
+      }
+
       console.error( 'An error ocurred', error )
       setFormState( FormState.Error )
     }
   }
-
 
   const shouldShowOverlay = [ FormState.Completed, FormState.Error ].includes( formState )
 
@@ -169,12 +170,14 @@ const CreatePoint: React.FC = () => {
           <img src={logo} alt="Ecoleta"/>
           <Link to="/">
             <FiArrowLeft/>
-                    Voltar para a home
+            Voltar para a home
           </Link>
         </header>
 
         <form onSubmit={handleSubmit}>
           <h1>Cadastro do <br/>Ponto de coleta</h1>
+
+          <Dropzone onFileUploaded={setSelectedFile}/>
 
           <fieldset>
             <legend>
@@ -227,7 +230,6 @@ const CreatePoint: React.FC = () => {
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-
               <Marker position={selectedPosition}/>
             </Map>
             <div className="field-group">
