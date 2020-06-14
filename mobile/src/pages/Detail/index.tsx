@@ -6,6 +6,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { RectButton } from 'react-native-gesture-handler'
 
 import api from '../../services/api'
+import config from '../../config'
 
 import styles from './styles' // eslint-disable-line sort-imports
 
@@ -13,7 +14,6 @@ interface Point {
     id: string
     city: string
     email: string
-    image: string
     latitude: string
     longitude: string
     name: string
@@ -66,7 +66,7 @@ const Detail: React.FC = () => {
         <Icon name="arrow-left" size={20} color="#34cb79"/>
       </TouchableOpacity>
 
-      <Image style={styles.pointImage} source={{ uri: point.image }}/>
+      <Image style={styles.pointImage} source={{ uri: `${config.imagesPath}${point.id}` }}/>
 
       <Text style={styles.pointName}>
         {point.name}
