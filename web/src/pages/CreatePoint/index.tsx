@@ -111,9 +111,9 @@ const CreatePoint: React.FC = () => {
     const items = selectedItems
 
     return (
-      [ name, email, whatsapp ].every( ( val ) => val === '' ) ||
-      [ uf, city ].every( ( val ) => val === '0' ) ||
-      [ latitude, longitude, items.length ].every( ( val ) => val === 0 )
+      [ name, email, whatsapp ].every( ( val ) => val !== '' ) &&
+      [ uf, city ].every( ( val ) => val !== '0' ) &&
+      [ latitude, longitude, items.length ].every( ( val ) => val !== 0 )
     )
   }
 
