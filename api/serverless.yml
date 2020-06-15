@@ -8,7 +8,8 @@ custom:
     automatic: true
     number: 3
   s3:
-    host: localhost
+    host: "0.0.0.0"
+    address: "0.0.0.0"
     directory: ./s3
     cors: ./s3/cors-config.xml
     allowMismatchedSignatures: true

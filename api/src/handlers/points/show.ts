@@ -9,7 +9,9 @@ export const handler = async ( event: APIGatewayEvent ): Promise<Response> => {
   const { id } = event.pathParameters
 
   try {
-    const point = await Point.fromDynamo( { id } )
+    const point = await Point
+      .fromDynamo( { id } )
+      .then( ( fetchedPoint ) => fetchedPoint.toJSON() )
     const items = await Item.all()
 
     const pointItems = items.filter( ( item ) => point.items.includes( item.id ) )

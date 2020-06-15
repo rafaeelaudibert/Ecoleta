@@ -4,7 +4,7 @@
   "description": "Serverless API developed during RocketSeat's NLW #1 for Ecoleta application",
   "main": "index.js",
   "scripts": {
-    "start": "sls offline start --seed=data",
+    "start": "sls offline start --seed=data --host 0.0.0.0",
     "test": "NODE_ENV=test ./node_modules/.bin/jest --ci --verbose",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "buildtest": "tsc --noEmit",
