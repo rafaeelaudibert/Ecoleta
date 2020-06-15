@@ -6,11 +6,13 @@ Application for companies which collect recyclable materials to register, so tha
 
 This application was developed through the [Rocketseat](https://rocketseat.com.br/) NLW #01, but with some big changes from the proposed project on the Backend part, using Serverless technologies.
 
+The application is available [on this location](https://ecoleta.rafaaudibert.dev). The information about the deployment can be found below.
+
 ## Architeture 📐
 
 Everything is built using [Typescript](https://www.typescriptlang.org/), from the backend, through the Desktop and Mobile application.
 
-Everything is deployed automatically using [Github Actions](https://github.com/features/actions), when we push to the master branch at [Github](https://github.com).
+The code is deployed automatically using [Github Actions](https://github.com/features/actions), when we push to the master branch at [Github](https://github.com).
 
 The app is not available on the stores, but can be easily accessed using Expo and running `npm start` on `mobile` folder and following Expo steps.
 
@@ -31,6 +33,8 @@ A simple React application, responsible for the application data input. Props to
 * [Dropzone](https://www.dropzonejs.com/) with [Dropzone React](https://react-dropzone.js.org/)
 * [Leaflet](https://leafletjs.com/) with [Leaflet React](https://react-leaflet.js.org/)
 
+The frontend is deployed using [Vercel](https://vercel.com/), and is available [here](https://ecoleta.rafaaudibert.dev).
+
 ### Mobile app 📱
 
 [React Native](https://reactnative.dev/) Typescript mobile app, built using [Expo](https://expo.io/) for local testing (and some awesome extra libraries). Responsible for displaying the information registered through the web form.
@@ -50,11 +54,6 @@ A simple React application, responsible for the application data input. Props to
 ![Points Screen](./assets/ecoleta-mobile-2.jpeg)
 
 ![Details Screen](./assets/ecoleta-mobile-3.jpeg)
-
-## Todo 🔮
-
-* Deploy frontend on production (using Vercel)
-* Change to another business rule, so that it is not exactly the same as presented during NLW #01
 
 ## Author 🧔
 

@@ -1,7 +1,8 @@
 {
   "name": "ecoleta-web",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "description": "React web app developed during RocketSeat's NLW #1 for Ecoleta application",
   "dependencies": {
     "@types/node": "^12.12.43",
     "@types/react": "^16.9.35",

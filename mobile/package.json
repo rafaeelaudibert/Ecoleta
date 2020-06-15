@@ -1,4 +1,8 @@
 {
+  "name": "ecoleta-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mobile app developed during RocketSeat's NLW #1 for Ecoleta application",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -44,5 +48,5 @@
     "eslint-plugin-react": "^7.20.0",
     "typescript": "~3.8.3"
   },
-  "private": true
+  "author": "Rafa Audibert <rafaeelaudibert@gmail.com>"
 }
