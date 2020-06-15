@@ -1,14 +1,14 @@
 {
   "name": "ecoleta-api",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Serverless API developed during RocketSeat's NLW #1 for Ecoleta application",
   "main": "index.js",
   "scripts": {
     "start": "sls offline start --seed=data --host 0.0.0.0",
-    "test": "NODE_ENV=test ./node_modules/.bin/jest --ci --verbose",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "buildtest": "tsc --noEmit",
-    "sync_assets": "aws s3 sync ./assets s3://ecoleta-static/assets"
+    "deploy": "npm run deploy:lambda && npm run deploy:dynamo && npm run deploy:s3",
+    "deploy:lambda": "sls deploy -s $NODE_ENV",
+    "deploy:dynamo": "sls dynamodb seed --seed=data --stage=$NODE_ENV --region=us-east-1",
+    "deploy:s3": "aws s3 sync ./assets s3://ecoleta-static/assets"
   },
   "dependencies": {
     "aws-lambda": "^1.0.6",
