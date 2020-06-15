@@ -2,7 +2,7 @@ import './styles.css'
 
 import React from 'react'
 
-const SuccessTick: React.FC = () => <div className="animation-ctn">
+const AnimatedSuccessSvg: React.FC = () => <div className="animation-ctn">
   <div className="animation-icon">
     <svg xmlns="http://www.w3.org/2000/svg" width="154px" height="154px">
       <g fill="none" stroke="#22AE73" strokeWidth="2">
@@ -17,4 +17,4 @@ const SuccessTick: React.FC = () => <div className="animation-ctn">
   </div>
 </div>
 
-export default SuccessTick
+export default AnimatedSuccessSvg

@@ -1,8 +1,8 @@
-import './styles.css'
-
 import React from 'react'
 
-const ErrorTick: React.FC = () => <div className="animation-ctn">
+import './styles.css'
+
+const AnimatedErrorSvg: React.FC = () => <div className="animation-ctn">
   <div className="animation-icon">
     <svg xmlns="http://www.w3.org/2000/svg" width="154px" height="154px">
       <g fill="none" stroke="#F44812" strokeWidth="2">
@@ -17,4 +17,4 @@ const ErrorTick: React.FC = () => <div className="animation-ctn">
   </div>
 </div>
 
-export default ErrorTick
+export default AnimatedErrorSvg

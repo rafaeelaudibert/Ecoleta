@@ -1,5 +1,4 @@
 /* eslint-disable sort-keys */
-
 import { Response } from '@handlers/types'
 import StatusCode from '@utils/httpStatus'
 

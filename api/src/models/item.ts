@@ -1,5 +1,6 @@
-import Model, { SearchKey } from './model'
 import { v1 as uuidV1 } from 'uuid'
+
+import Model, { SearchKey } from './model'
 
 export interface ItemParams extends Record<string, unknown>{
     id?: string

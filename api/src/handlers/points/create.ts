@@ -1,8 +1,12 @@
-import { failure, success } from '@utils/response'
 import { APIGatewayEvent } from 'aws-lambda'
-import Point from '@models/point'
+
 import { Response } from '@handlers/types'
+import { failure, success } from '@utils/response'
+
+import Point from '@models/point'
+
 import S3 from '../../lib/S3'
+
 
 const { IMAGES_BUCKET } = process.env
 

@@ -1,14 +1,16 @@
+import React, { useEffect, useState } from 'react'
+
 import * as MailComposer from 'expo-mail-composer'
 import { FontAwesome, Feather as Icon } from '@expo/vector-icons'
 import { Image, Linking, SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { RectButton } from 'react-native-gesture-handler'
 
 import api from '../../services/api'
-import config from '../../config'
 
-import styles from './styles' // eslint-disable-line sort-imports
+import styles from './styles'
+
+import config from '../../config'
 
 interface Point {
     id: string

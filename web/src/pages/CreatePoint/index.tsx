@@ -1,18 +1,20 @@
-import './styles.css'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+
 import { Link, useHistory } from 'react-router-dom'
 import { Map, Marker, TileLayer } from 'react-leaflet'
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { LeafletMouseEvent } from 'leaflet'
+import { FiArrowLeft } from 'react-icons/fi'
+
+import Dropzone from '../../components/Dropzone'
+import Overlay from '../../components/Overlay'
+import FormState from '../../models/formState'
 import api, { Item } from '../../services/api'
 import ibge, { IbgeCityResponse, IbgeUfResponse } from '../../services/ibge'
-import Dropzone from '../../components/Dropzone'
-import { FiArrowLeft } from 'react-icons/fi'
-import FormState from './formState'
-import { LeafletMouseEvent } from 'leaflet'
-import Overlay from './Overlay'
+import rawRequest from '../../services/raw'
 
 import config from '../../config'
 import logo from '../../assets/logo.svg'
-import rawRequest from '../../services/raw'
+import './styles.css'
 
 const CreatePoint: React.FC = () => {
   const [ allItems, setAllItems ] = useState<Item[]>( [] )

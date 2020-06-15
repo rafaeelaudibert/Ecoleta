@@ -1,9 +1,11 @@
-import { failure, success } from '@utils/response'
 import { APIGatewayEvent } from 'aws-lambda'
-import Item from '@models/item'
-import Point from '@models/point'
+
 import { Response } from '@handlers/types'
 import StatusCode from '@utils/httpStatus'
+import { failure, success } from '@utils/response'
+
+import Item from '@models/item'
+import Point from '@models/point'
 
 export const handler = async ( event: APIGatewayEvent ): Promise<Response> => {
   const { id } = event.pathParameters

@@ -1,12 +1,14 @@
-import { Image, ImageBackground, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import ibge, { IbgeCityResponse, IbgeUfResponse } from '../../services/ibge'
+
+import { Image, ImageBackground, Text, View } from 'react-native'
 import { Feather as Icon } from '@expo/vector-icons'
 import Picker from 'react-native-picker-select'
 import { RectButton } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 
-import styles, { inputStyles } from './styles' // eslint-disable-line sort-imports
+import ibge, { IbgeCityResponse, IbgeUfResponse } from '../../services/ibge'
+
+import styles, { inputStyles } from './styles'
 
 
 const Home: React.FC = () => {

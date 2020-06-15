@@ -1,14 +1,25 @@
-import * as Location from 'expo-location'
-import { Alert, Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
-import MapView, { Marker } from 'react-native-maps'
 import React, { useEffect, useState } from 'react'
+
+import * as Location from 'expo-location'
+import MapView, { Marker } from 'react-native-maps'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { Feather as Icon } from '@expo/vector-icons'
 import { SvgUri } from 'react-native-svg'
-import api from '../../services/api'
-import config from '../../config'
+import {
+  Alert,
+  Image,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native'
 
-import styles from './styles' // eslint-disable-line sort-imports
+import api from '../../services/api'
+
+import styles from './styles'
+
+import config from '../../config'
 
 interface Item {
     id: string

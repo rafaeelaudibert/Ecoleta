@@ -1,7 +1,9 @@
-import { failure, success } from '@utils/response'
 import { APIGatewayEvent } from 'aws-lambda'
-import Item from '@models/item'
+
 import { Response } from '@handlers/types'
+import { failure, success } from '@utils/response'
+
+import Item from '@models/item'
 
 export const handler = async ( _event: APIGatewayEvent ): Promise<Response> => {
   try {

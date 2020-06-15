@@ -1,7 +1,10 @@
-import { failure, success } from '@utils/response'
 import { APIGatewayEvent } from 'aws-lambda'
-import Point from '@models/point'
+
 import { Response } from '@handlers/types'
+import { failure, success } from '@utils/response'
+
+import Point from '@models/point'
+
 
 export const handler = async ( event: APIGatewayEvent ): Promise<Response> => {
   const { city, uf, items } = event.queryStringParameters || {}

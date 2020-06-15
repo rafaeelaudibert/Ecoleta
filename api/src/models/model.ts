@@ -1,5 +1,6 @@
 /* eslint-disable sort-keys */
 import AWS from 'aws-sdk'
+
 import DB from '@lib/db'
 
 export type SearchKey = Record<string, unknown>

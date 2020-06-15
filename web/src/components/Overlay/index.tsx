@@ -1,9 +1,11 @@
-import './styles.css'
 import React, { MouseEvent } from 'react'
-import ErrorTick from './ErrorTick'
-import FormState from './formState'
-import SuccessTick from './SuccessTick'
 
+import AnimatedErrorSvg from '../AnimatedSvg/error'
+import AnimatedSuccessSvg from '../AnimatedSvg/success'
+
+import FormState from '../../models/formState'
+
+import './styles.css'
 
 interface OverlayProps {
     formState: FormState,
@@ -15,14 +17,14 @@ const Overlay = ( props: OverlayProps ): JSX.Element => {
 
   if ( formState === FormState.Completed ) {
     return <div id="overlay">
-      <SuccessTick/>
+      <AnimatedSuccessSvg/>
       <h2>Cadastro concluído</h2>
 
       <button onClick={onClick}>Voltar</button>
     </div>
   } else if ( formState === FormState.Error ) {
     return <div id="overlay">
-      <ErrorTick/>
+      <AnimatedErrorSvg/>
       <h2>Aconteceu um erro, tente novamente mais tarde</h2>
 
       <button onClick={onClick}>Voltar</button>

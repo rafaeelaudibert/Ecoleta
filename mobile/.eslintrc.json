@@ -67,7 +67,8 @@
             "argsIgnorePattern": "^_"
         }],
         "function-call-argument-newline": ["error", "consistent"],
-        "react/prop-types": 0
+        "react/prop-types": 0,
+        "sort-imports": 0
     },
     "parser": "@typescript-eslint/parser",
     "env": {
