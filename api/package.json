@@ -6,8 +6,8 @@
   "scripts": {
     "start": "sls offline start --seed=data --host 0.0.0.0",
     "deploy": "npm run deploy:lambda && npm run deploy:dynamo && npm run deploy:s3",
-    "deploy:lambda": "sls deploy -s $NODE_ENV",
-    "deploy:dynamo": "sls dynamodb seed --seed=data --stage=$NODE_ENV --region=us-east-1",
+    "deploy:lambda": "serverless deploy -s $NODE_ENV",
+    "deploy:dynamo": "serverless dynamodb seed --seed=data --stage=$NODE_ENV --region=us-east-1 --online",
     "deploy:s3": "aws s3 sync ./assets s3://ecoleta-static/assets"
   },
   "dependencies": {
@@ -33,6 +33,7 @@
     "eslint-plugin-node": "^11.1.0",
     "fork-ts-checker-webpack-plugin": "^3.0.1",
     "jest": "^26.0.1",
+    "serverless": "^1.72.0",
     "serverless-dynamodb-local": "^0.2.39",
     "serverless-offline": "^5.12.1",
     "serverless-prune-plugin": "^1.4.3",

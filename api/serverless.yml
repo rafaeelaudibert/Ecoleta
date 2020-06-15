@@ -16,6 +16,7 @@ custom:
   dynamodb:
     stages:
       - local
+      - prod
     start:
       migrate: true
       seed: true

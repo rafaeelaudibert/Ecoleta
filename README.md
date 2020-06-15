@@ -1,5 +1,7 @@
 # Ecoleta ♻️
 
+![Deploy Application](https://github.com/rafaeelaudibert/Ecoleta/workflows/Deploy%20Application/badge.svg)
+
 Application for companies which collect recyclable materials to register, so that people in need of those companies can find them easily.
 
 This application was developed through the [Rocketseat](https://rocketseat.com.br/) NLW #01, but with some big changes from the proposed project on the Backend part, using Serverless technologies.
@@ -9,6 +11,8 @@ This application was developed through the [Rocketseat](https://rocketseat.com.b
 Everything is built using [Typescript](https://www.typescriptlang.org/), from the backend, through the Desktop and Mobile application.
 
 Everything is deployed automatically using [Github Actions](https://github.com/features/actions), when we push to the master branch at [Github](https://github.com).
+
+The app is not available on the stores, but can be easily accessed using Expo and running `npm start` on `mobile` folder and following Expo steps.
 
 ### Backend 💾
 
@@ -49,7 +53,7 @@ A simple React application, responsible for the application data input. Props to
 
 ## Todo 🔮
 
-* Deploy on production with Github Actions (Vercel + Lambda + Dynamo + S3)
+* Deploy frontend on production (using Vercel)
 * Change to another business rule, so that it is not exactly the same as presented during NLW #01
 
 ## Author 🧔
