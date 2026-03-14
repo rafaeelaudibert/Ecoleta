@@ -16,7 +16,7 @@
     "react-icons": "^3.10.0",
     "react-leaflet": "^2.7.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1"
+    "react-scripts": "5.0.1"
   },
   "scripts": {
     "start": "react-scripts start --port 3001",
@@ -46,7 +46,7 @@
     "@types/react-leaflet": "^2.5.1",
     "@typescript-eslint/eslint-plugin": "^3.1.0",
     "@typescript-eslint/parser": "^3.1.0",
-    "eslint": "^6.6.0",
+    "eslint": "^10.0.3",
     "eslint-plugin-node": "^11.1.0",
     "typescript": "^3.9.5"
   },
