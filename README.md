@@ -1,18 +1,21 @@
 # Ecoleta ♻️
 
-![Deploy Application](https://github.com/rafaeelaudibert/Ecoleta/workflows/Deploy%20Application/badge.svg)
+> **No longer deployed.** This ran at `ecoleta.rafaaudibert.dev`, with the frontend on
+> Vercel and a serverless backend (API Gateway, Lambda, DynamoDB, S3) on AWS, until
+> September 2026 when the AWS account was decommissioned. Neither the site nor the API
+> resolves any more. The code is kept for reference.
 
 Application for companies which collect recyclable materials to register, so that people in need of those companies can find them easily.
 
 This application was developed through the [Rocketseat](https://rocketseat.com.br/) NLW #01, but with some big changes from the proposed project on the Backend part, using Serverless technologies.
 
-The application is available [on this location](https://ecoleta.rafaaudibert.dev). The information about the deployment can be found below.
+The application used to be available at `ecoleta.rafaaudibert.dev`. The deployment notes below describe how it was wired up, and are kept for reference rather than as current instructions.
 
 ## Architeture 📐
 
 Everything is built using [Typescript](https://www.typescriptlang.org/), from the backend, through the Desktop and Mobile application.
 
-The code is deployed automatically using [Github Actions](https://github.com/features/actions), when we push to the master branch at [Github](https://github.com).
+The code was deployed automatically using [Github Actions](https://github.com/features/actions) on push to master. That workflow has been removed.
 
 The app is not available on the stores, but can be easily accessed using Expo and running `npm start` on `mobile` folder and following Expo steps.
 
